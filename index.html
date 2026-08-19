@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Sujitha &amp; Samidi — Find Your Table</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy: #1B2A4A;
+    --navy-deep: #0F1A30;
+    --gold: #C9A227;
+    --gold-soft: #E4CB6E;
+    --ivory: #FAF7F0;
+    --blush: #EAD3C6;
+    --text: #23262B;
+    --muted: #6b6b6b;
+    --line: #E6E0D3;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--ivory);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+  }
+  img { max-width: 100%; display: block; }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    position: relative;
+    min-height: 88vh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .hero img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 25%;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(15,26,48,0.05) 0%, rgba(15,26,48,0.15) 45%, rgba(15,26,48,0.88) 100%);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    text-align: center;
+    padding: 0 24px 46px;
+    color: var(--ivory);
+  }
+  .hero-eyebrow {
+    font-size: 12.5px;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--gold-soft);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Bodoni Moda', serif;
+    font-weight: 500;
+    font-size: clamp(42px, 11vw, 92px);
+    margin: 0;
+    line-height: 1;
+    letter-spacing: 0.01em;
+  }
+  .hero h1 .amp {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--gold-soft);
+    display: inline-block;
+    padding: 0 6px;
+  }
+  .hero-divider {
+    width: 46px;
+    height: 1px;
+    background: var(--gold);
+    margin: 20px auto;
+  }
+  .hero-venue {
+    font-size: 14px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(250,247,240,0.82);
+  }
+
+  /* ---------- GALLERY ---------- */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    background: var(--navy-deep);
+  }
+  .gallery img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 1/1;
+  }
+  .gallery a:first-child {
+    grid-row: span 2;
+  }
+  .gallery a:first-child img { aspect-ratio: 1/2.02; }
+  .gallery a { display:block; }
+
+  /* ---------- FIND YOUR TABLE ---------- */
+  .finder-section {
+    padding: 64px 18px 80px;
+  }
+  .finder-inner {
+    max-width: 540px;
+    margin: 0 auto;
+  }
+  .finder-eyebrow {
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .finder-title {
+    font-family: 'Bodoni Moda', serif;
+    font-weight: 500;
+    text-align: center;
+    font-size: clamp(28px, 6vw, 38px);
+    margin: 0 0 36px;
+    color: var(--navy);
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 30px 24px 34px;
+    box-shadow: 0 10px 40px rgba(27,42,74,0.06);
+  }
+  @media (min-width: 480px) {
+    .card { padding: 40px 34px 40px; }
+  }
+
+  .search-row {
+    display: flex;
+    gap: 8px;
+    position: relative;
+    flex-wrap: wrap;
+  }
+  input[type="text"] {
+    flex: 1 1 150px;
+    min-width: 0;
+    padding: 13px 15px;
+    font-size: 15px;
+    font-family: 'Outfit', sans-serif;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: var(--ivory);
+    color: var(--text);
+    outline: none;
+  }
+  input[type="text"]:focus { border-color: var(--gold); }
+  button {
+    padding: 13px 22px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: 0.02em;
+    background: var(--navy);
+    color: var(--ivory);
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s ease;
+  }
+  button:hover { background: var(--navy-deep); }
+
+  .autocomplete-list {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    max-height: 230px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    box-shadow: 0 8px 26px rgba(27,42,74,0.14);
+    z-index: 20;
+  }
+  .autocomplete-list.show { display: block; }
+  .autocomplete-item {
+    padding: 11px 14px;
+    font-size: 14px;
+    color: var(--text);
+    cursor: pointer;
+    border-bottom: 1px solid #f1efe8;
+  }
+  .autocomplete-item:last-child { border-bottom: none; }
+  .autocomplete-item:hover, .autocomplete-item.active { background: var(--ivory); }
+  .autocomplete-item .match { font-weight: 600; color: var(--navy); }
+
+  .voice-toggle {
+    text-align: center;
+    margin: 16px 0 4px;
+  }
+  .voice-toggle label {
+    font-size: 12.5px;
+    color: var(--muted);
+    cursor: pointer;
+    user-select: none;
+  }
+  .voice-toggle input { vertical-align: middle; margin-right: 6px; }
+
+  .found-line {
+    margin-top: 18px;
+    padding: 16px 18px;
+    background: var(--ivory);
+    border-left: 3px solid var(--gold);
+    border-radius: 2px;
+    font-size: 14.5px;
+    line-height: 1.65;
+    display: none;
+  }
+  .found-line.show { display: block; }
+  .found-line .fl-name { font-weight: 600; color: var(--navy); }
+  .found-line .fl-table { color: var(--gold); font-weight: 600; }
+
+  .not-found {
+    display: none;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+    margin: 18px 0 0;
+  }
+  .not-found.show { display: block; }
+
+  .venue-btn-wrap { text-align: center; margin-top: 30px; }
+  .venue-btn-wrap .action-btn {
+    display: inline-block;
+    padding: 13px 30px;
+    text-decoration: none;
+    font-size: 13.5px;
+    letter-spacing: 0.04em;
+    border-radius: 3px;
+    margin: 6px 6px;
+  }
+  .plan-btn {
+    background: var(--navy);
+    color: var(--ivory);
+    border: 1px solid var(--navy);
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+  }
+  .plan-btn:hover { background: var(--navy-deep); }
+  .venue-btn {
+    background: transparent;
+    border: 1px solid var(--navy);
+    color: var(--navy);
+  }
+  .venue-btn:hover { background: var(--navy); color: var(--ivory); }
+
+  /* ---- Seating plan modal ---- */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,26,48,0.72);
+    z-index: 100;
+    padding: 16px;
+    overflow-y: auto;
+  }
+  .modal-overlay.show { display: block; }
+  .modal-box {
+    background: #fff;
+    border-radius: 6px;
+    max-width: 640px;
+    margin: 20px auto;
+    padding: 16px;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background: var(--ivory);
+    color: var(--navy);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    z-index: 2;
+  }
+  .modal-title {
+    text-align: center;
+    font-family: 'Bodoni Moda', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 4px 0 14px;
+    color: var(--navy);
+  }
+  .plan-frame {
+    position: relative;
+    line-height: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .plan-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .table-marker {
+    position: absolute;
+    width: 6.5%;
+    aspect-ratio: 1 / 1;
+    max-width: 30px;
+    min-width: 16px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.45);
+  }
+  .table-marker.highlight {
+    animation: blinkColors 1.1s linear infinite, popScale 0.55s ease-in-out infinite alternate;
+    z-index: 5;
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.9), 0 2px 6px rgba(0,0,0,0.5);
+  }
+  @keyframes blinkColors {
+    0%   { background: #FF3B30; }
+    20%  { background: #FF9500; }
+    40%  { background: #FFCC00; color:#3a2e00; }
+    60%  { background: #34C759; }
+    80%  { background: #5AC8FA; }
+    100% { background: #FF3B30; }
+  }
+  @keyframes popScale {
+    from { transform: translate(-50%, -50%) scale(1); }
+    to   { transform: translate(-50%, -50%) scale(1.4); }
+  }
+
+  footer {
+    text-align: center;
+    padding: 10px 24px 60px;
+  }
+  footer img {
+    width: 92px;
+    margin: 0 auto 14px;
+  }
+  footer p {
+    font-family: 'Bodoni Moda', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--navy);
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+
+  <div class="hero">
+    <img src="photo-2.jpg" alt="Sujitha and Samidi" />
+    <div class="hero-content">
+      <div class="hero-eyebrow">Together With Their Families</div>
+      <h1>Sujitha <span class="amp">&amp;</span> Samidi</h1>
+      <div class="hero-divider"></div>
+      <div class="hero-venue">Senuri Grand Castello</div>
+    </div>
+  </div>
+
+  <div class="gallery">
+    <a href="photo-1.jpg" target="_blank"><img src="photo-1.jpg" alt="Sujitha and Samidi" loading="lazy"/></a>
+    <a href="photo-3.jpg" target="_blank"><img src="photo-3.jpg" alt="Samidi" loading="lazy"/></a>
+    <a href="photo-4.jpg" target="_blank"><img src="photo-4.jpg" alt="Sujitha" loading="lazy"/></a>
+  </div>
+
+  <div class="finder-section">
+    <div class="finder-inner">
+      <div class="finder-eyebrow">Guest Seating</div>
+      <h2 class="finder-title">Find Your Table</h2>
+
+      <div class="card">
+        <div class="search-row">
+          <input type="text" id="guestName" placeholder="Enter your name" autocomplete="off" />
+          <button id="findBtn">Find Table</button>
+          <div class="autocomplete-list" id="autocompleteList"></div>
+        </div>
+
+        <div class="voice-toggle">
+          <label><input type="checkbox" id="voiceEnabled" checked /> Announce my table out loud</label>
+        </div>
+
+        <div class="found-line" id="foundLine"></div>
+        <div class="not-found" id="notFound">
+          We couldn't find that name — please check the spelling, or ask a member of the wedding party for help.
+        </div>
+      </div>
+
+      <div class="venue-btn-wrap">
+        <button type="button" class="action-btn plan-btn" id="openSeatingPlan">View Seating Plan</button><br>
+        <a class="action-btn venue-btn" href="https://maps.app.goo.gl/aaqyGmF8U8EtSY3YA" target="_blank" rel="noopener">Directions to Senuri Grand Castello</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="planModal">
+    <div class="modal-box">
+      <button class="modal-close" id="closePlanModal" aria-label="Close">&times;</button>
+      <div class="modal-title">Emperor's Banquet — Seating Plan</div>
+      <div class="plan-frame" id="planFrame">
+        <img src="seating-plan.png" alt="Wedding hall seating plan" />
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <img src="couple-illustration.png" alt="" />
+    <p>With love, thank you for celebrating with us</p>
+  </footer>
+
+<script>
+  // ---- Guest list (loaded from Seating_Chart.xlsx) ----
+  // tables: array of table numbers. flexible: true means guest may sit at ANY table in the list.
+  const guests = [
+    { name: "Bride's Family", tables: [7], flexible: false, gender: "female" },
+    { name: "Groom's Family", tables: [8], flexible: false, gender: "male" },
+    { name: "Mr Jayantha, Mrs Shermila Misso & Chamasha Silva", tables: [10], flexible: false, gender: "male" },
+    { name: "Mr. & Mrs. Chamod Liyanage.", tables: [18,23,24,25], flexible: true, gender: "male" },
+    { name: "Mr. & Mrs. Chathura Moladande", tables: [18,23,24,25], flexible: true, gender: "male" },
+    { name: "Mr. & Mrs. Dayananda Kularatne", tables: [17], flexible: false, gender: "male" },
+    { name: "Mr. & Mrs. Deepal Pathiraja", tables: [15], flexible: false, gender: "male" },
+    { name: "Mr. & Mrs. Karunanayake", tables: [14,20,22], flexible: true, gender: "male" },
+    { name: "Mr. & Mrs. Kosala Dayan & Family", tables: [9], flexible: false, gender: "male" },
+    { name: "Mr. & Mrs. Lal Ranasinghe", tables: [17], flexible: false, gender: "male" },
+    { name: "Mr. & Mrs. Rajitha Wickramasinghe", tables: [9], flexible: false, gender: "male" },
+    { name: "Mr. & Mrs. Sarath Jayawardena", tables: [9], flexible: false, gender: "male" },
+    { name: "Mr. & Mrs. Sumith Bandara", tables: [9], flexible: false, gender: "male" },
+    { name: "Mr. & Mrs. Upali Arampola", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "male" },
+    { name: "Mr. & Mrs.Jananu Mayadunne", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "male" },
+    { name: "Mr. Abeysinghe & Family", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "male" },
+    { name: "Mr. Amal Bandara", tables: [17], flexible: false, gender: "male" },
+    { name: "Mr. Amal Perera", tables: [19], flexible: false, gender: "male" },
+    { name: "Mr. Amila Nuwan", tables: [18,23,24,25], flexible: true, gender: "male" },
+    { name: "Mr. Anura Thennakoon", tables: [1,2,3,4,5,6,11,12,15], flexible: true, gender: "male" },
+    { name: "Mr. Arjuna damunupola", tables: [19], flexible: false, gender: "male" },
+    { name: "Mr. Avishka Perera", tables: [18,23,24,25], flexible: true, gender: "male" },
+    { name: "Mr. Chamidu Gimhan", tables: [22], flexible: false, gender: "male" },
+    { name: "Mr. Chamin kodikara", tables: [19], flexible: false, gender: "male" },
+    { name: "Mr. Channa Gunarathna", tables: [19], flexible: false, gender: "male" },
+    { name: "Mr. Chathura Deshappriya", tables: [18,23,24,25], flexible: true, gender: "male" },
+    { name: "Mr. Chatura Rajapaksha", tables: [19], flexible: false, gender: "male" },
+    { name: "Mr. Chrishantha Madanasinghe & Family", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "male" },
+    { name: "Mr. Deepal Ranathunga", tables: [19], flexible: false, gender: "male" },
+    { name: "Mr. Dimuthu Madushan", tables: [18,23,24,25], flexible: true, gender: "male" },
+    { name: "Mr. Dinesh Fernando", tables: [19], flexible: false, gender: "male" },
+    { name: "Mr. Dinesh Gunarathne & Family", tables: [1,2,3,4,5,6,11,12,14], flexible: true, gender: "male" },
+    { name: "Mr. Dissanayake Thennakoon", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "male" },
+    { name: "Mr. Gamini Withana & Family", tables: [8], flexible: false, gender: "male" },
+    { name: "Mr. Gunarathne & Family", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "male" },
+    { name: "Mr. Harsha Wickramasinghe", tables: [19], flexible: false, gender: "male" },
+    { name: "Mr. Herath Arampola & Family", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "male" },
+    { name: "Mr. Herath Arampola & Family", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "male" },
+    { name: "Mr. Hiran Bandara", tables: [17], flexible: false, gender: "male" },
+    { name: "Mr. Indunil Bandara", tables: [18,23,24,25], flexible: true, gender: "male" },
+    { name: "Mr. Jayathissa Thennakoon & Family", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "male" },
+    { name: "Mr. Kasthuri Anuradhanayake & Family", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "male" },
+    { name: "Mr. Kasun", tables: [15], flexible: false, gender: "male" },
+    { name: "Mr. Kasun Gamage", tables: [18,23,24,25], flexible: true, gender: "male" },
+    { name: "Mr. Kumara Jayakody & Family", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "male" },
+    { name: "Mr. Lakindu Anjana", tables: [22], flexible: false, gender: "male" },
+    { name: "Mr. Lakshan Senevirathne", tables: [18,23,24,25], flexible: true, gender: "male" },
+    { name: "Mr. Lesandu Ransara", tables: [22], flexible: false, gender: "male" },
+    { name: "Mr. Mahinda", tables: [15], flexible: false, gender: "male" },
+    { name: "Mr. Malith Lahiru Jayasinghe & Family", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "male" },
+    { name: "Mr. Malvila Thennakoon & Family", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "male" },
+    { name: "Mr. Methindu Yehan", tables: [22], flexible: false, gender: "male" },
+    { name: "Mr. Nadun samarakoon", tables: [19], flexible: false, gender: "male" },
+    { name: "Mr. Nethma Akesh", tables: [22], flexible: false, gender: "male" },
+    { name: "Mr. Nirosh Edirisinghe", tables: [19], flexible: false, gender: "male" },
+    { name: "Mr. Palitha", tables: [15], flexible: false, gender: "male" },
+    { name: "Mr. Pasindu Munaweera", tables: [18,23,24,25], flexible: true, gender: "male" },
+    { name: "Mr. Pathmanathan pradeep", tables: [19], flexible: false, gender: "male" },
+    { name: "Mr. Pawara Sasmitha", tables: [22], flexible: false, gender: "male" },
+    { name: "Mr. Prasanna Aberathne & Family", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "male" },
+    { name: "Mr. Prasanna samarakoon", tables: [19], flexible: false, gender: "male" },
+    { name: "Mr. Praveen Jayaweera", tables: [17], flexible: false, gender: "male" },
+    { name: "Mr. Ralph Jayamanne", tables: [22], flexible: false, gender: "male" },
+    { name: "Mr. Ranithu Vinnath", tables: [22], flexible: false, gender: "male" },
+    { name: "Mr. Rathnayake Dissanyake & Family", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "male" },
+    { name: "Mr. Ruwan Jayarathne", tables: [19], flexible: false, gender: "male" },
+    { name: "Mr. Saliya", tables: [15], flexible: false, gender: "male" },
+    { name: "Mr. Sameera Thennakoon", tables: [1,2,3,4,5,6,11,12,17], flexible: true, gender: "male" },
+    { name: "Mr. Sithil Methsuka", tables: [22], flexible: false, gender: "male" },
+    { name: "Mr. Sonal Damsath", tables: [22], flexible: false, gender: "male" },
+    { name: "Mr. Sriharan Prashanth", tables: [18,23,24,25], flexible: true, gender: "male" },
+    { name: "Mr. Tharanga Liyanapathirana & Family", tables: [10], flexible: false, gender: "male" },
+    { name: "Mr. Tharindu Kanchana", tables: [17], flexible: false, gender: "male" },
+    { name: "Mr. Thilanka Kavinda", tables: [17], flexible: false, gender: "male" },
+    { name: "Mr. Thushantha Gunasekara", tables: [18,23,24,25], flexible: true, gender: "male" },
+    { name: "Mr. Upali Thennakoon & Family", tables: [7], flexible: false, gender: "male" },
+    { name: "Mr. Vedheha Darmathilake", tables: [19], flexible: false, gender: "male" },
+    { name: "Mr. Viranga Gamage", tables: [19], flexible: false, gender: "male" },
+    { name: "Mr. Wickramanayake", tables: [15], flexible: false, gender: "male" },
+    { name: "Mrs. Anoma Priyangani", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "female" },
+    { name: "Mrs. Eesha Anjalee", tables: [16], flexible: false, gender: "female" },
+    { name: "Mrs. Ganga Thennakoon", tables: [1,2,3,4,5,6,11,12,16], flexible: true, gender: "female" },
+    { name: "Mrs. Indra & Family", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "female" },
+    { name: "Mrs. Irangani Gamage & Family", tables: [17], flexible: false, gender: "female" },
+    { name: "Mrs. Kumuduni", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "female" },
+    { name: "Mrs. Kusum Thennakoon & Family", tables: [1,2,3,4,5,6,11,12,14], flexible: true, gender: "female" },
+    { name: "Mrs. Kusuma Thennakoon", tables: [1,2,3,4,5,6,11,12,18], flexible: true, gender: "female" },
+    { name: "Mrs. Malshi Kulathunga", tables: [16], flexible: false, gender: "female" },
+    { name: "Mrs. Manel Thennakoon & Family", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "female" },
+    { name: "Mrs. Nirosha Ranasinghe", tables: [16], flexible: false, gender: "female" },
+    { name: "Mrs. Pushpa Herath", tables: [7], flexible: false, gender: "female" },
+    { name: "Mrs. Sanjeewani Herath & Family", tables: [7], flexible: false, gender: "female" },
+    { name: "Mrs. Shashikala madhurenu", tables: [16], flexible: false, gender: "female" },
+    { name: "Mrs. Shashini Shashikala", tables: [7], flexible: false, gender: "female" },
+    { name: "Mrs. Subhani Rasangani & Family", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "female" },
+    { name: "Mrs. Thulani Dhananjika", tables: [16], flexible: false, gender: "female" },
+    { name: "Mrs. Udani imalsha", tables: [16], flexible: false, gender: "female" },
+    { name: "Mrs. Udula Kumari & Family", tables: [1,2,3,4,5,6,11,12,15], flexible: true, gender: "female" },
+    { name: "Mrs. Uthpala Abeysinghe & Family", tables: [1,2,3,4,5,6,11,12,13], flexible: true, gender: "female" },
+    { name: "Ms. Dilu De Silva", tables: [18,23,24,25], flexible: true, gender: "female" },
+    { name: "Ms. Kamani Liyanapathirana", tables: [10], flexible: false, gender: "female" },
+    { name: "Ms. Natasha Hay", tables: [19], flexible: false, gender: "female" },
+    { name: "Ms. Pahasara & Ms. Baddegama.", tables: [18,23,24,25], flexible: true, gender: "female" },
+    { name: "Ms. Patali", tables: [17], flexible: false, gender: "female" },
+    { name: "Ms. Vindya Jayasinghe", tables: [18,23,24,25], flexible: true, gender: "female" },
+    { name: "Prof. Percy Wijewardana & Family", tables: [8], flexible: false, gender: "female" }
+  ];
+
+  // ---- Table marker layout (percent positions over the seating plan image) ----
+  const markers = [
+    { table: "1", left: 78.32, top: 65.56 },
+    { table: "2", left: 65.83, top: 65.53 },
+    { table: "3", left: 65.83, top: 58.71 },
+    { table: "4", left: 78.32, top: 58.83 },
+    { table: "5", left: 65.89, top: 51.94 },
+    { table: "6", left: 78.32, top: 51.94 },
+    { table: "7", left: 67.16, top: 27.95 },
+    { table: "8", left: 44.1, top: 25.7 },
+    { table: "9", left: 44.0, top: 34.05 },
+    { table: "10", left: 44.0, top: 42.01 },
+    { table: "11", left: 44.05, top: 49.91 },
+    { table: "12", left: 44.1, top: 57.06 },
+    { table: "13", left: 43.84, top: 64.66 },
+    { table: "14", left: 29.7, top: 64.66 },
+    { table: "15", left: 29.7, top: 57.06 },
+    { table: "16", left: 29.7, top: 49.91 },
+    { table: "17", left: 29.65, top: 42.01 },
+    { table: "18", left: 29.65, top: 34.05 },
+    { table: "19", left: 29.7, top: 25.7 },
+    { table: "20", left: 15.62, top: 64.6 },
+    { table: "21", left: 15.52, top: 57.06 },
+    { table: "22", left: 15.46, top: 49.91 },
+    { table: "23", left: 15.57, top: 42.01 },
+    { table: "24", left: 15.62, top: 34.05 },
+    { table: "25", left: 15.62, top: 25.7 },
+    { table: "26", left: 36.82, top: 16.49 }
+  ];
+
+  const planFrame = document.getElementById('planFrame');
+  markers.forEach(m => {
+    const el = document.createElement('div');
+    el.className = 'table-marker';
+    el.dataset.table = m.table;
+    el.style.top = m.top + '%';
+    el.style.left = m.left + '%';
+    el.textContent = m.table;
+    planFrame.appendChild(el);
+  });
+
+  const planModal = document.getElementById('planModal');
+  const openSeatingPlan = document.getElementById('openSeatingPlan');
+  const closePlanModal = document.getElementById('closePlanModal');
+
+  function clearHighlights() {
+    document.querySelectorAll('.table-marker.highlight').forEach(el => el.classList.remove('highlight'));
+  }
+  function highlightTable(table) {
+    const el = document.querySelector('.table-marker[data-table="' + table + '"]');
+    if (el) el.classList.add('highlight');
+  }
+
+  const nameInput = document.getElementById('guestName');
+  const findBtn = document.getElementById('findBtn');
+  const foundLine = document.getElementById('foundLine');
+  const notFoundEl = document.getElementById('notFound');
+  const voiceEnabled = document.getElementById('voiceEnabled');
+  const autocompleteList = document.getElementById('autocompleteList');
+
+  // ---- Custom autocomplete (works reliably across all browsers, including in-app browsers like WhatsApp) ----
+  let activeIndex = -1;
+  let currentSuggestions = [];
+
+  function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function renderSuggestions(query) {
+    const key = query.trim().toLowerCase();
+    if (!key) { hideSuggestions(); return; }
+
+    const starts = guests.filter(g => g.name.toLowerCase().startsWith(key));
+    const contains = guests.filter(g => !g.name.toLowerCase().startsWith(key) && g.name.toLowerCase().includes(key));
+    currentSuggestions = [...starts, ...contains].slice(0, 8);
+    activeIndex = -1;
+
+    if (currentSuggestions.length === 0) {
+      autocompleteList.innerHTML = '<div class="autocomplete-item" style="color:#999;cursor:default;">No matching names</div>';
+      autocompleteList.classList.add('show');
+      return;
+    }
+
+    autocompleteList.innerHTML = currentSuggestions.map((g, i) => {
+      const idx = g.name.toLowerCase().indexOf(key);
+      let label = escapeHtml(g.name);
+      if (idx !== -1) {
+        label = escapeHtml(g.name.slice(0, idx)) +
+          '<span class="match">' + escapeHtml(g.name.slice(idx, idx + key.length)) + '</span>' +
+          escapeHtml(g.name.slice(idx + key.length));
+      }
+      const tableLabel = g.flexible ? 'Any of: ' + g.tables.join(', ') : 'Table ' + g.tables[0];
+      return '<div class="autocomplete-item" data-index="' + i + '">' + label + ' <span style="color:#999;font-size:12.5px;">- ' + tableLabel + '</span></div>';
+    }).join('');
+    autocompleteList.classList.add('show');
+  }
+
+  function hideSuggestions() {
+    autocompleteList.classList.remove('show');
+    autocompleteList.innerHTML = '';
+    currentSuggestions = [];
+    activeIndex = -1;
+  }
+
+  nameInput.addEventListener('input', () => renderSuggestions(nameInput.value));
+  nameInput.addEventListener('focus', () => { if (nameInput.value.trim()) renderSuggestions(nameInput.value); });
+
+  autocompleteList.addEventListener('click', (e) => {
+    const item = e.target.closest('.autocomplete-item');
+    if (!item || item.dataset.index === undefined) return;
+    const idx = parseInt(item.dataset.index, 10);
+    const chosen = currentSuggestions[idx];
+    if (chosen) {
+      nameInput.value = chosen.name;
+      hideSuggestions();
+      findGuest();
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-row')) hideSuggestions();
+  });
+
+  // ---- Voice selection: male voice for male guests, female voice for female guests ----
+  let maleVoice = null;
+  let femaleVoice = null;
+  function pickVoices() {
+    if (!('speechSynthesis' in window)) return;
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices.length) return;
+    const femaleHints = ['female','zira','samantha','victoria','susan','karen','moira','tessa','fiona','joanna','salli','google uk english female','google us english'];
+    const maleHints = ['male','david','mark','daniel','alex','fred','george','google uk english male'];
+    femaleVoice = voices.find(v => femaleHints.some(h => v.name.toLowerCase().includes(h)))
+               || voices.find(v => v.lang && v.lang.startsWith('en'));
+    maleVoice = voices.find(v => maleHints.some(h => v.name.toLowerCase().includes(h)))
+             || voices.find(v => v.lang && v.lang.startsWith('en') && v !== femaleVoice)
+             || femaleVoice;
+  }
+  if ('speechSynthesis' in window) {
+    pickVoices();
+    window.speechSynthesis.onvoiceschanged = pickVoices;
+  }
+
+  function speak(text, gender) {
+    if (!voiceEnabled.checked) return;
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.rate = 0.95;
+    const voice = gender === 'male' ? maleVoice : femaleVoice;
+    if (voice) utter.voice = voice;
+    utter.pitch = gender === 'male' ? 0.95 : 1.12;
+    window.speechSynthesis.speak(utter);
+  }
+
+  function firstNameOf(fullName) {
+    return fullName.replace(/^(Mr|Mrs|Ms|Miss|Dr|Prof)\.\s*/i, '').split(/[\s&]/)[0];
+  }
+
+  function buildFoundLineHtml(g) {
+    const tableLabel = g.flexible
+      ? 'You may sit at any of tables: <span class="fl-table">' + g.tables.join(', ') + '</span>'
+      : 'Table <span class="fl-table">' + g.tables[0] + '</span>';
+    return '<span class="fl-name">' + escapeHtml(g.name) + '</span><br>' + tableLabel;
+  }
+
+  function buildSpeech(g) {
+    const first = firstNameOf(g.name);
+    const intro = "Hi " + first + ", thank you for being with us on Sujitha and Samidi's special wedding day. " +
+      "We are delighted to have you here to celebrate this beautiful moment together. ";
+    if (g.flexible) {
+      const list = g.tables.join(', ');
+      return intro + "Please feel free to take a seat at any of the following tables, as per your wish: table " + list + ". We hope you enjoy the celebration!";
+    }
+    return intro + "Your seat number is " + g.tables[0] + ". Please take your seat there. We hope you enjoy the celebration!";
+  }
+
+  function findGuest() {
+    const raw = nameInput.value.trim();
+    if (!raw) return;
+    const key = raw.toLowerCase();
+
+    notFoundEl.classList.remove('show');
+    foundLine.classList.remove('show');
+    foundLine.innerHTML = '';
+    clearHighlights();
+
+    let matches = guests.filter(g => g.name.toLowerCase() === key);
+    if (matches.length === 0) matches = guests.filter(g => g.name.toLowerCase().includes(key));
+
+    if (matches.length === 0) {
+      notFoundEl.classList.add('show');
+      return;
+    }
+
+    if (matches.length > 1) {
+      foundLine.classList.add('show');
+      foundLine.innerHTML = 'Multiple matches found — please select your exact name:<br><br>' +
+        matches.map(m => buildFoundLineHtml(m)).join('<br><br>');
+      matches.forEach(m => m.tables.forEach(t => highlightTable(t)));
+      planModal.classList.add('show');
+      return;
+    }
+
+    const g = matches[0];
+    foundLine.classList.add('show');
+    foundLine.innerHTML = buildFoundLineHtml(g);
+    g.tables.forEach(t => highlightTable(t));
+    planModal.classList.add('show');
+    speak(buildSpeech(g), g.gender);
+  }
+
+  findBtn.addEventListener('click', () => { hideSuggestions(); findGuest(); });
+  openSeatingPlan.addEventListener('click', () => planModal.classList.add('show'));
+  closePlanModal.addEventListener('click', () => planModal.classList.remove('show'));
+  planModal.addEventListener('click', (e) => { if (e.target === planModal) planModal.classList.remove('show'); });
+  nameInput.addEventListener('keydown', (e) => {
+    const items = autocompleteList.querySelectorAll('.autocomplete-item[data-index]');
+    if (e.key === 'ArrowDown' && items.length) {
+      e.preventDefault();
+      activeIndex = Math.min(activeIndex + 1, items.length - 1);
+      items.forEach((el,i) => el.classList.toggle('active', i===activeIndex));
+      items[activeIndex].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'ArrowUp' && items.length) {
+      e.preventDefault();
+      activeIndex = Math.max(activeIndex - 1, 0);
+      items.forEach((el,i) => el.classList.toggle('active', i===activeIndex));
+      items[activeIndex].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (activeIndex >= 0 && currentSuggestions[activeIndex]) {
+        nameInput.value = currentSuggestions[activeIndex].name;
+      }
+      hideSuggestions();
+      findGuest();
+    } else if (e.key === 'Escape') {
+      hideSuggestions();
+    }
+  });
+</script>
+</body>
+</html>
